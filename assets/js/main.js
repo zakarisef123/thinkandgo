@@ -6,6 +6,61 @@
   var body = doc.body;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Grand titre : découpage en mots, montée ligne par ligne ---------- */
+  function splitTitle(el) {
+    var walker = doc.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (n) {
+      var frag = doc.createDocumentFragment();
+      n.textContent.split(/([ \t\n\r]+)/).forEach(function (part) {
+        if (!part) return;
+        if (/^[ \t\n\r]+$/.test(part)) { frag.appendChild(doc.createTextNode(' ')); return; }
+        var mask = doc.createElement('span');
+        mask.className = 'wm';
+        var inner = doc.createElement('span');
+        inner.className = 'wm__i';
+        inner.textContent = part;
+        mask.appendChild(inner);
+        frag.appendChild(mask);
+      });
+      n.parentNode.replaceChild(frag, n);
+    });
+    // Same delay for every word of a line, staggered line after line
+    var tops = [];
+    el.querySelectorAll('.wm').forEach(function (w) {
+      var t = Math.round(w.offsetTop);
+      var line = tops.indexOf(t);
+      if (line === -1) { tops.push(t); line = tops.length - 1; }
+      w.firstChild.style.setProperty('--d', (0.12 + line * 0.13).toFixed(2) + 's');
+    });
+    el.classList.add('split');
+    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+  }
+  if (!reduceMotion) {
+    doc.querySelectorAll('main h1').forEach(function (h1) {
+      h1.classList.remove('reveal');
+      splitTitle(h1);
+    });
+  }
+
+  /* ---------- Méthode : ligne du temps au défilement ---------- */
+  var timelines = Array.prototype.slice.call(doc.querySelectorAll('[data-timeline]'));
+  function updateTimelines() {
+    var trigger = window.innerHeight * 0.62;
+    timelines.forEach(function (tl) {
+      var rail = tl.querySelector('.timeline__rail');
+      var r = rail.getBoundingClientRect();
+      var p = reduceMotion ? 1 : Math.max(0, Math.min(1, (trigger - r.top) / r.height));
+      tl.style.setProperty('--p', p.toFixed(4));
+      tl.querySelectorAll('.tl-step').forEach(function (step) {
+        var num = step.querySelector('.tl-step__num').getBoundingClientRect();
+        step.classList.toggle('is-on', reduceMotion || num.top + num.height / 2 < trigger);
+      });
+    });
+  }
+  window.addEventListener('resize', updateTimelines);
+
   /* ---------- Header: scrolled state, hide on scroll down, progress ---------- */
   var header = doc.getElementById('header');
   var progress = header.querySelector('.progress');
@@ -34,6 +89,7 @@
     }
     sticky.classList.toggle('is-visible', y > heroBottom && !nearContact);
 
+    updateTimelines();
     lastY = y;
     ticking = false;
   }
