@@ -10,8 +10,8 @@
   var header = doc.getElementById('header');
   var progress = header.querySelector('.progress');
   var sticky = doc.getElementById('sticky-cta');
-  var hero = doc.querySelector('.hero');
-  var contact = doc.getElementById('contact');
+  var hero = doc.querySelector('.hero') || doc.getElementById('contact');
+  var contact = doc.getElementById('funnel');
   var lastY = window.scrollY;
   var ticking = false;
 
@@ -26,9 +26,12 @@
     progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
 
     // Sticky CTA: visible after the hero, hidden around the contact form
-    var heroBottom = hero.offsetTop + hero.offsetHeight - 200;
-    var c = contact.getBoundingClientRect();
-    var nearContact = c.top < window.innerHeight && c.bottom > 0;
+    var heroBottom = hero ? hero.offsetTop + hero.offsetHeight - 200 : 400;
+    var nearContact = false;
+    if (contact) {
+      var c = contact.getBoundingClientRect();
+      nearContact = c.top < window.innerHeight && c.bottom > 0;
+    }
     sticky.classList.toggle('is-visible', y > heroBottom && !nearContact);
 
     lastY = y;
@@ -53,22 +56,6 @@
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && body.classList.contains('menu-open')) { setMenu(false); burger.focus(); } });
   window.addEventListener('resize', function () { if (window.innerWidth >= 1080) setMenu(false); });
-
-  /* ---------- Active nav link ---------- */
-  var navLinks = Array.prototype.slice.call(doc.querySelectorAll('.nav__link'));
-  var sectionMap = {};
-  navLinks.forEach(function (a) { sectionMap[a.getAttribute('href').slice(1)] = a; });
-  if ('IntersectionObserver' in window) {
-    var navObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach(function (l) { l.classList.remove('is-active'); });
-        var link = sectionMap[entry.target.id];
-        if (link) link.classList.add('is-active');
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    doc.querySelectorAll('main section[id]').forEach(function (s) { navObs.observe(s); });
-  }
 
   /* ---------- Reveal on scroll ---------- */
   var revealEls = doc.querySelectorAll('.reveal, [data-ring], .region, .discretion__statement');
@@ -142,6 +129,9 @@
 
   /* ---------- Conversion funnel ---------- */
   var funnel = doc.getElementById('funnel');
+  if (funnel) initFunnel(funnel);
+
+  function initFunnel(funnel) {
   var form = funnel.querySelector('form');
   var steps = Array.prototype.slice.call(form.querySelectorAll('.funnel__step'));
   var bar = funnel.querySelector('.funnel__bar span');
@@ -264,7 +254,18 @@
     }
   });
 
-  // Pre-select intent from any CTA with data-intent
+  // Pre-select intent from the URL (?projet=acquerir|ceder) or any CTA with data-intent
+  function preselect(intent) {
+    var radio = form.querySelector('[data-intent-value="' + intent + '"]');
+    if (radio && !funnel.classList.contains('is-done')) {
+      radio.checked = true;
+      current = 1;
+      render('next');
+    }
+  }
+  var qs = new URLSearchParams(window.location.search).get('projet');
+  if (qs) preselect(qs);
+
   doc.querySelectorAll('[data-intent]').forEach(function (cta) {
     cta.addEventListener('click', function () {
       var intent = cta.getAttribute('data-intent');
@@ -305,7 +306,8 @@
     });
   });
 
-  render();
+  if (!qs) render();
+  }
 
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');

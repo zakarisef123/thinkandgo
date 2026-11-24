@@ -974,3 +974,58 @@ picture { display: block; }
 .about__media picture, .hero__visual picture { height: 100%; }
 .btn[hidden] { display: none; }
 .stat dd { margin: 0; }
+
+/* ==========================================================================
+   Multi-page additions
+   ========================================================================== */
+
+/* Breadcrumbs */
+.crumbs {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: clamp(24px, 4vw, 40px);
+  font-size: 14px; font-weight: 500; color: var(--muted);
+}
+.crumbs a { transition: color .2s; }
+.crumbs a:hover { color: var(--accent); }
+.crumbs [aria-current] { color: var(--ink); }
+.crumbs--ink { margin-bottom: 0; color: var(--muted-on-ink); }
+.crumbs--ink [aria-current] { color: var(--white); }
+
+/* Inner page hero */
+.hero--page { padding-bottom: clamp(40px, 6vw, 72px); }
+.display--page { font-size: clamp(40px, 5.6vw, 80px); margin-top: 22px; }
+.hero--page .display--page .serif { display: inline; color: var(--accent); }
+.hero__visual--page { aspect-ratio: 4 / 3.6; }
+.hero__visual--page img { object-position: var(--pos, center); }
+@media (max-width: 1023px) { .hero__visual--page { aspect-ratio: 16 / 11; } }
+
+/* Nav: current page */
+.nav__link[aria-current="page"] { color: var(--accent); }
+.mobile-menu__list a[aria-current="page"] { color: var(--accent); }
+
+/* 3-column value cards */
+@media (min-width: 1024px) { .audience--3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* Home teaser to À propos */
+.teaser {
+  display: grid; gap: clamp(32px, 5vw, 64px); align-items: center;
+  padding: clamp(28px, 4vw, 56px);
+  border-radius: var(--radius-l); background: var(--white); border: 1px solid var(--line);
+}
+@media (min-width: 960px) { .teaser { grid-template-columns: 1.1fr .9fr; } }
+.teaser .link-arrow { margin-top: 28px; }
+.teaser__media { border-radius: var(--radius); overflow: hidden; aspect-ratio: 16 / 11; background: var(--ink); }
+.teaser__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.teaser:hover .teaser__media img { transform: scale(1.04); }
+
+/* Contact page: the form section is the page hero */
+.section--contact-page { padding-top: calc(var(--header-h) + clamp(32px, 5vw, 64px)); }
+
+/* Contact page: header sits on a dark section until scrolled */
+body[data-page="contact"] .header:not(.is-scrolled) .logo,
+body[data-page="contact"] .header:not(.is-scrolled) .nav__link:not([aria-current]) { color: var(--white); }
+body[data-page="contact"] .header:not(.is-scrolled) .nav__link:hover { background: rgba(255, 255, 255, .08); }
+body[data-page="contact"] .header:not(.is-scrolled) .header__phone { color: var(--muted-on-ink); }
+body[data-page="contact"].menu-open .header .logo { color: var(--ink); }
+.teaser__media picture { height: 100%; }
+.section--flush-bottom { padding-bottom: 0; }
