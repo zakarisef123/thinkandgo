@@ -6,12 +6,67 @@
   var body = doc.body;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Grand titre : découpage en mots, montée ligne par ligne ---------- */
+  function splitTitle(el) {
+    var walker = doc.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (n) {
+      var frag = doc.createDocumentFragment();
+      n.textContent.split(/([ \t\n\r]+)/).forEach(function (part) {
+        if (!part) return;
+        if (/^[ \t\n\r]+$/.test(part)) { frag.appendChild(doc.createTextNode(' ')); return; }
+        var mask = doc.createElement('span');
+        mask.className = 'wm';
+        var inner = doc.createElement('span');
+        inner.className = 'wm__i';
+        inner.textContent = part;
+        mask.appendChild(inner);
+        frag.appendChild(mask);
+      });
+      n.parentNode.replaceChild(frag, n);
+    });
+    // Same delay for every word of a line, staggered line after line
+    var tops = [];
+    el.querySelectorAll('.wm').forEach(function (w) {
+      var t = Math.round(w.offsetTop);
+      var line = tops.indexOf(t);
+      if (line === -1) { tops.push(t); line = tops.length - 1; }
+      w.firstChild.style.setProperty('--d', (0.12 + line * 0.13).toFixed(2) + 's');
+    });
+    el.classList.add('split');
+    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+  }
+  if (!reduceMotion) {
+    doc.querySelectorAll('main h1').forEach(function (h1) {
+      h1.classList.remove('reveal');
+      splitTitle(h1);
+    });
+  }
+
+  /* ---------- Méthode : ligne du temps au défilement ---------- */
+  var timelines = Array.prototype.slice.call(doc.querySelectorAll('[data-timeline]'));
+  function updateTimelines() {
+    var trigger = window.innerHeight * 0.62;
+    timelines.forEach(function (tl) {
+      var rail = tl.querySelector('.timeline__rail');
+      var r = rail.getBoundingClientRect();
+      var p = reduceMotion ? 1 : Math.max(0, Math.min(1, (trigger - r.top) / r.height));
+      tl.style.setProperty('--p', p.toFixed(4));
+      tl.querySelectorAll('.tl-step').forEach(function (step) {
+        var num = step.querySelector('.tl-step__num').getBoundingClientRect();
+        step.classList.toggle('is-on', reduceMotion || num.top + num.height / 2 < trigger);
+      });
+    });
+  }
+  window.addEventListener('resize', updateTimelines);
+
   /* ---------- Header: scrolled state, hide on scroll down, progress ---------- */
   var header = doc.getElementById('header');
   var progress = header.querySelector('.progress');
   var sticky = doc.getElementById('sticky-cta');
-  var hero = doc.querySelector('.hero');
-  var contact = doc.getElementById('contact');
+  var hero = doc.querySelector('.hero') || doc.getElementById('contact');
+  var contact = doc.getElementById('funnel');
   var lastY = window.scrollY;
   var ticking = false;
 
@@ -26,11 +81,15 @@
     progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
 
     // Sticky CTA: visible after the hero, hidden around the contact form
-    var heroBottom = hero.offsetTop + hero.offsetHeight - 200;
-    var c = contact.getBoundingClientRect();
-    var nearContact = c.top < window.innerHeight && c.bottom > 0;
+    var heroBottom = hero ? hero.offsetTop + hero.offsetHeight - 200 : 400;
+    var nearContact = false;
+    if (contact) {
+      var c = contact.getBoundingClientRect();
+      nearContact = c.top < window.innerHeight && c.bottom > 0;
+    }
     sticky.classList.toggle('is-visible', y > heroBottom && !nearContact);
 
+    updateTimelines();
     lastY = y;
     ticking = false;
   }
@@ -53,22 +112,6 @@
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && body.classList.contains('menu-open')) { setMenu(false); burger.focus(); } });
   window.addEventListener('resize', function () { if (window.innerWidth >= 1080) setMenu(false); });
-
-  /* ---------- Active nav link ---------- */
-  var navLinks = Array.prototype.slice.call(doc.querySelectorAll('.nav__link'));
-  var sectionMap = {};
-  navLinks.forEach(function (a) { sectionMap[a.getAttribute('href').slice(1)] = a; });
-  if ('IntersectionObserver' in window) {
-    var navObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach(function (l) { l.classList.remove('is-active'); });
-        var link = sectionMap[entry.target.id];
-        if (link) link.classList.add('is-active');
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    doc.querySelectorAll('main section[id]').forEach(function (s) { navObs.observe(s); });
-  }
 
   /* ---------- Reveal on scroll ---------- */
   var revealEls = doc.querySelectorAll('.reveal, [data-ring], .region, .discretion__statement');
@@ -142,6 +185,9 @@
 
   /* ---------- Conversion funnel ---------- */
   var funnel = doc.getElementById('funnel');
+  if (funnel) initFunnel(funnel);
+
+  function initFunnel(funnel) {
   var form = funnel.querySelector('form');
   var steps = Array.prototype.slice.call(form.querySelectorAll('.funnel__step'));
   var bar = funnel.querySelector('.funnel__bar span');
@@ -264,7 +310,18 @@
     }
   });
 
-  // Pre-select intent from any CTA with data-intent
+  // Pre-select intent from the URL (?projet=acquerir|ceder) or any CTA with data-intent
+  function preselect(intent) {
+    var radio = form.querySelector('[data-intent-value="' + intent + '"]');
+    if (radio && !funnel.classList.contains('is-done')) {
+      radio.checked = true;
+      current = 1;
+      render('next');
+    }
+  }
+  var qs = new URLSearchParams(window.location.search).get('projet');
+  if (qs) preselect(qs);
+
   doc.querySelectorAll('[data-intent]').forEach(function (cta) {
     cta.addEventListener('click', function () {
       var intent = cta.getAttribute('data-intent');
@@ -305,7 +362,8 @@
     });
   });
 
-  render();
+  if (!qs) render();
+  }
 
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');
