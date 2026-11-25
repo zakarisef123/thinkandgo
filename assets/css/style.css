@@ -703,3 +703,25 @@ body.menu-open .mobile-menu__list a { transform: none; opacity: 1; }
 .pub__meta b { color: var(--accent); font-weight: 600; }
 .pub__num { font-family: var(--serif); font-size: 15px; font-style: italic; letter-spacing: 0; text-transform: none; color: var(--fg); padding-right: 14px; border-right: 1px solid var(--line-strong); }
 @media (prefers-reduced-motion: reduce) { .js .sec-head.reveal > div:first-child::before { transform: scaleY(1); } }
+
+/* ==========================================================================
+   Contact : e-mail direct (remplace le formulaire)
+   ========================================================================== */
+.mailcard { display: grid; gap: 28px; padding: clamp(28px, 4vw, 56px); background: var(--soft); border-top: 3px solid var(--accent); }
+@media (min-width: 700px) { .mailcard { grid-template-columns: auto 1fr; gap: 40px; align-items: start; } }
+.mailcard__icon {
+  display: grid; place-items: center; width: clamp(96px, 10vw, 132px); aspect-ratio: 1;
+  background: var(--accent); color: var(--white);
+  transition: background-color .3s, transform .45s var(--ease);
+}
+.mailcard__icon svg { width: 46%; height: 46%; stroke-width: 1.4; transition: transform .45s var(--ease); }
+.mailcard__icon:hover { background: var(--ink); }
+.mailcard__icon:hover svg { transform: translateY(-3px) scale(1.04); }
+.mailcard__body { display: grid; gap: 18px; justify-items: start; min-width: 0; }
+.mailcard__body .h2 { font-size: clamp(30px, 3.4vw, 46px); }
+.mailcard__addr { font-family: var(--serif); font-size: clamp(22px, 2.4vw, 30px); border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; overflow-wrap: anywhere; transition: color .2s, border-color .2s; }
+.mailcard__addr:hover { color: var(--accent); border-color: var(--accent); }
+.mailcard__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.mailcard__note { font-size: 14px; color: var(--muted); }
+.mailcard__note.is-ok { color: var(--accent); font-weight: 600; }
+.hero .btn svg { width: 18px; height: 18px; }
