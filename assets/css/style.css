@@ -731,3 +731,27 @@ body.menu-open .mobile-menu__list a { transform: none; opacity: 1; }
 .mailcard__alt.is-highlight { background: var(--bg); box-shadow: 0 0 0 12px var(--bg), 0 0 0 13px var(--accent); }
 .mailcard__alt.is-highlight .mailcard__alt-t { color: var(--fg); font-weight: 600; }
 .mailcard__note:empty { display: none; }
+
+/* E-mail : fenêtre de choix de messagerie */
+.mailpop {
+  position: absolute; z-index: 300; width: min(320px, calc(100vw - 24px));
+  padding: 16px; background: var(--bg); border: 1px solid var(--line-strong); border-top: 3px solid var(--accent);
+  box-shadow: 0 20px 50px -20px rgba(15, 17, 20, .35);
+  animation: popIn .25s var(--ease) both;
+}
+@keyframes popIn { from { opacity: 0; transform: translateY(-6px); } }
+.mailpop__t { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.mailpop__list { display: grid; }
+.mailpop__list button {
+  width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 12px 10px; border: 0; border-bottom: 1px solid var(--line); background: transparent;
+  text-align: left; font-size: 15px; font-weight: 500; transition: background-color .2s, color .2s;
+}
+.mailpop__list button:hover, .mailpop__list button:focus-visible { background: var(--soft); color: var(--accent); outline: none; }
+.mailpop__list small { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+.mailpop__copy { width: 100%; margin-top: 10px; padding: 10px; border: 1px dashed var(--line-strong); background: transparent; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.mailpop__copy:hover { color: var(--fg); border-color: var(--fg); }
+.mailpop__remember { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--muted); cursor: pointer; }
+.mailpop__remember input { accent-color: var(--accent); }
+.mailcard__reset { border: 0; background: none; padding: 0; font-size: 13px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.mailcard__reset:hover { color: var(--accent); }

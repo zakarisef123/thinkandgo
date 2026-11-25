@@ -415,26 +415,89 @@
       a.setAttribute('href', a.getAttribute('href').replace(new RegExp('([?&])' + key + '=[^&]*'), '$1' + key + '=' + encodeURIComponent(subjects[projet] + ' · échange confidentiel')));
     });
   }
-  // If no mail app opens (the page keeps focus), point the visitor to Gmail / Outlook / copy
-  doc.querySelectorAll('a[href^="mailto:"]').forEach(function (link) {
-    link.addEventListener('click', function () {
-      var alt = doc.querySelector('[data-mail-alt]');
-      if (!alt) return;
-      var left = false;
-      function onBlur() { left = true; }
-      window.addEventListener('blur', onBlur);
-      doc.addEventListener('visibilitychange', onBlur);
-      setTimeout(function () {
-        window.removeEventListener('blur', onBlur);
-        doc.removeEventListener('visibilitychange', onBlur);
-        if (!left) {
-          alt.classList.add('is-highlight');
-          var t = alt.querySelector('.mailcard__alt-t');
-          if (t) t.textContent = 'Aucune messagerie ne s’est ouverte ? Choisissez la vôtre :';
-          alt.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
-        }
-      }, 1500);
+  /* ---------- E-mail : choix de la messagerie (ordinateur), mémorisé ---------- */
+  var MAIL_PROVIDERS = [
+    { id: 'gmail', label: 'Gmail', url: function (m) { return 'https://mail.google.com/mail/?view=cm&fs=1&to=' + m.to + '&su=' + m.subject + '&body=' + m.body; } },
+    { id: 'outlook', label: 'Outlook (Microsoft 365)', url: function (m) { return 'https://outlook.office.com/mail/deeplink/compose?to=' + m.to + '&subject=' + m.subject + '&body=' + m.body; } },
+    { id: 'outlookcom', label: 'Outlook.com / Hotmail', url: function (m) { return 'https://outlook.live.com/mail/0/deeplink/compose?to=' + m.to + '&subject=' + m.subject + '&body=' + m.body; } },
+    { id: 'yahoo', label: 'Yahoo Mail', url: function (m) { return 'https://compose.mail.yahoo.com/?to=' + m.to + '&subject=' + m.subject + '&body=' + m.body; } },
+    { id: 'app', label: 'Application e-mail (Mail, Outlook…)', url: null }
+  ];
+  function parseMailto(href) {
+    var q = href.split('?')[1] || '';
+    var params = {};
+    q.split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) params[kv.slice(0, i)] = kv.slice(i + 1); });
+    return { to: encodeURIComponent(href.slice(7).split('?')[0]), subject: params.subject || '', body: params.body || '' };
+  }
+  function storedProvider() { try { return localStorage.getItem('tg-mail-provider'); } catch (e) { return null; } }
+  function storeProvider(id) { try { localStorage.setItem('tg-mail-provider', id); } catch (e) {} }
+  function openWith(id, href) {
+    var p = MAIL_PROVIDERS.filter(function (x) { return x.id === id; })[0];
+    if (!p || !p.url) { window.location.href = href; return; }
+    window.open(p.url(parseMailto(href)), '_blank', 'noopener');
+  }
+  var isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var pop = null, popFor = null;
+  function closePop() { if (pop) { pop.remove(); pop = null; if (popFor) popFor.setAttribute('aria-expanded', 'false'); popFor = null; } }
+  function showPop(link) {
+    closePop();
+    var href = link.getAttribute('href');
+    var last = storedProvider();
+    var to = decodeURIComponent(parseMailto(href).to);
+    pop = doc.createElement('div');
+    pop.className = 'mailpop';
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-label', 'Choisir votre messagerie');
+    var html = '<p class="mailpop__t">Ouvrir le message avec</p><ul class="mailpop__list">';
+    var ordered = MAIL_PROVIDERS.slice().sort(function (a, b) { return (b.id === last) - (a.id === last); });
+    ordered.forEach(function (p) {
+      html += '<li><button type="button" data-provider="' + p.id + '">' + p.label + (p.id === last ? '<small>Dernier utilisé</small>' : '') + '</button></li>';
     });
+    html += '</ul><button type="button" class="mailpop__copy" data-copy-pop>Copier l’adresse · ' + to + '</button>';
+    html += '<label class="mailpop__remember"><input type="checkbox" checked> Se souvenir de mon choix</label>';
+    pop.innerHTML = html;
+    doc.body.appendChild(pop);
+    var r = link.getBoundingClientRect();
+    var w = pop.offsetWidth, h = pop.offsetHeight;
+    var left = Math.min(Math.max(12, r.left), window.innerWidth - w - 12);
+    var top = r.bottom + 10;
+    if (top + h > window.innerHeight - 12) top = Math.max(12, r.top - h - 10);
+    pop.style.left = (left + window.scrollX) + 'px';
+    pop.style.top = (top + window.scrollY) + 'px';
+    popFor = link; link.setAttribute('aria-expanded', 'true');
+    pop.querySelectorAll('[data-provider]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-provider');
+        if (pop.querySelector('.mailpop__remember input').checked) storeProvider(id);
+        closePop();
+        openWith(id, href);
+      });
+    });
+    pop.querySelector('[data-copy-pop]').addEventListener('click', function (e) {
+      var b = e.currentTarget;
+      var done = function () { b.textContent = 'Adresse copiée'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(to).then(done, done); else done();
+    });
+    var first = pop.querySelector('[data-provider]'); if (first) first.focus();
+  }
+  doc.querySelectorAll('a[href^="mailto:"]').forEach(function (link) {
+    link.setAttribute('aria-haspopup', 'dialog');
+    link.addEventListener('click', function (e) {
+      if (!isDesktop) return; // phones: the mail app opens directly
+      e.preventDefault();
+      var last = storedProvider();
+      if (last && !e.altKey) { openWith(last, link.getAttribute('href')); return; }
+      showPop(link);
+    });
+    link.addEventListener('contextmenu', function () {}); // keep native "copy email address"
+  });
+  doc.addEventListener('click', function (e) { if (pop && !pop.contains(e.target) && !(popFor && popFor.contains(e.target))) closePop(); });
+  doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && pop) { var f = popFor; closePop(); if (f) f.focus(); } });
+  window.addEventListener('resize', closePop);
+  // "Changer de messagerie" : forget the stored choice
+  doc.querySelectorAll('[data-mail-reset]').forEach(function (btn) {
+    btn.addEventListener('click', function () { try { localStorage.removeItem('tg-mail-provider'); } catch (e) {} btn.hidden = true; });
+    if (!storedProvider()) btn.hidden = true;
   });
 
   doc.querySelectorAll('[data-copy]').forEach(function (btn) {
