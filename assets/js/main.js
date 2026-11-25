@@ -391,6 +391,36 @@
     update();
   });
 
+  /* ---------- Hero vidéo : nom de la ville, pause, mouvement réduit ---------- */
+  var heroVideo = doc.querySelector('.hero__video');
+  if (heroVideo) {
+    var cityBox = doc.querySelector('.hero__city');
+    var cityText = cityBox && cityBox.querySelector('span');
+    var cities = heroVideo.getAttribute('data-cities').split('|').map(function (c) {
+      var i = c.indexOf(':'); return { t: parseFloat(c.slice(0, i)), name: c.slice(i + 1) };
+    });
+    var currentCity = cities[0].name;
+    heroVideo.addEventListener('timeupdate', function () {
+      var name = cities[0].name;
+      cities.forEach(function (c) { if (heroVideo.currentTime >= c.t + 0.4) name = c.name; });
+      if (name !== currentCity && cityText) {
+        currentCity = name;
+        cityBox.classList.add('is-changing');
+        setTimeout(function () { cityText.textContent = name; cityBox.classList.remove('is-changing'); }, 300);
+      }
+    });
+    var toggle = doc.querySelector('.hero__toggle');
+    function setPaused(paused) {
+      if (paused) heroVideo.pause(); else { var pr = heroVideo.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', String(paused));
+        toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
+      }
+    }
+    if (toggle) toggle.addEventListener('click', function () { setPaused(!heroVideo.paused); });
+    if (reduceMotion) { heroVideo.removeAttribute('autoplay'); setPaused(true); }
+  }
+
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');
   if (y) y.textContent = new Date().getFullYear();

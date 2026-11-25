@@ -20,7 +20,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Inter+Tight:wght@400;500;600&display=swap">
-  <link rel="preload" as="image" href="assets/img/grammont-1920.webp" imagesrcset="assets/img/grammont-960.webp 960w, assets/img/grammont-1920.webp 1920w" imagesizes="100vw">
   <link rel="stylesheet" href="assets/css/style.css">
   <script>document.documentElement.classList.add('js');</script>
   <script type="application/ld+json">
@@ -95,8 +94,8 @@
 
   <main id="main">
 
-    <section class="hero" id="top">
-      <div class="hero__media" style="--pos:30% 55%"><picture><source type="image/webp" srcset="assets/img/grammont-960.webp 960w, assets/img/grammont-1920.webp 1920w" sizes="100vw"><img src="assets/img/grammont-960.jpg" srcset="assets/img/grammont-960.jpg 960w, assets/img/grammont-1920.jpg 1920w" sizes="100vw" alt="Randonneur sur une crête du Grammont surplombant le lac Léman" fetchpriority="high" width="1920" height="1019"></picture></div>
+    <section class="hero hero--video" id="top">
+      <div class="hero__media hero__media--video"><video class="hero__video" autoplay muted loop playsinline preload="auto" poster="assets/video/hero-poster.jpg" aria-hidden="true" data-cities="0:Genève · Suisse|3.6:Paris · France|7.2:Milan · Italie|10.8:Francfort · Allemagne|14.4:Vienne · Autriche|18:New York · États-Unis"><source src="assets/video/hero.webm" type="video/webm"><source src="assets/video/hero.mp4" type="video/mp4"></video><p class="hero__city" aria-hidden="true"><span>Genève · Suisse</span></p><button class="hero__toggle" type="button" aria-label="Mettre la vidéo en pause" aria-pressed="false"><span></span></button></div>
       <div class="container hero__inner">
         <div class="hero__copy">
           
