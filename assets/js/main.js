@@ -6,6 +6,24 @@
   var body = doc.body;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Textes de l'interface (FR / EN / DE) ---------- */
+  var LANG = (doc.documentElement.lang || 'fr').slice(0, 2);
+  var I18N = {
+    fr: { menuOpen: 'Ouvrir le menu', menuClose: 'Fermer le menu', play: 'Lire la vidéo', pause: 'Mettre la vidéo en pause',
+          subjAcq: 'Projet d’acquisition', subjCes: 'Projet de cession', subjTail: ' · échange confidentiel',
+          appMail: 'Application e-mail (Mail, Outlook…)', openWith: 'Ouvrir le message avec', chooseMail: 'Choisir votre messagerie',
+          lastUsed: 'Dernier utilisé', copyAddr: 'Copier l’adresse', copied: 'Adresse copiée', remember: 'Se souvenir de mon choix', addr: 'Adresse' },
+    en: { menuOpen: 'Open menu', menuClose: 'Close menu', play: 'Play the video', pause: 'Pause the video',
+          subjAcq: 'Acquisition project', subjCes: 'Divestment project', subjTail: ' · confidential discussion',
+          appMail: 'E-mail app (Mail, Outlook…)', openWith: 'Open the message with', chooseMail: 'Choose your e-mail service',
+          lastUsed: 'Last used', copyAddr: 'Copy the address', copied: 'Address copied', remember: 'Remember my choice', addr: 'Address' },
+    de: { menuOpen: 'Menü öffnen', menuClose: 'Menü schliessen', play: 'Video abspielen', pause: 'Video pausieren',
+          subjAcq: 'Akquisitionsprojekt', subjCes: 'Verkaufsprojekt', subjTail: ' · vertrauliches Gespräch',
+          appMail: 'E-Mail-Programm (Mail, Outlook…)', openWith: 'Nachricht öffnen mit', chooseMail: 'E-Mail-Dienst wählen',
+          lastUsed: 'Zuletzt verwendet', copyAddr: 'Adresse kopieren', copied: 'Adresse kopiert', remember: 'Meine Wahl speichern', addr: 'Adresse' }
+  };
+  var L = I18N[LANG] || I18N.fr;
+
   /* ---------- Grand titre : découpage en mots, montée ligne par ligne ---------- */
   function splitTitle(el) {
     var walker = doc.createTreeWalker(el, NodeFilter.SHOW_TEXT);
@@ -104,7 +122,7 @@
   function setMenu(open) {
     body.classList.toggle('menu-open', open);
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    burger.setAttribute('aria-label', open ? L.menuClose : L.menuOpen);
     menu.setAttribute('aria-hidden', String(!open));
     if (open) header.classList.remove('is-hidden');
   }
@@ -399,7 +417,7 @@
       if (paused) heroVideo.pause(); else { var pr = heroVideo.play(); if (pr && pr.catch) pr.catch(function () {}); }
       if (toggle) {
         toggle.setAttribute('aria-pressed', String(paused));
-        toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
+        toggle.setAttribute('aria-label', paused ? L.play : L.pause);
       }
     }
     if (toggle) toggle.addEventListener('click', function () { setPaused(!heroVideo.paused); });
@@ -407,12 +425,12 @@
   }
 
   /* ---------- Contact : e-mail pré-rempli selon le projet, copie de l'adresse ---------- */
-  var subjects = { acquerir: 'Projet d’acquisition', ceder: 'Projet de cession' };
+  var subjects = { acquerir: L.subjAcq, ceder: L.subjCes };
   var projet = new URLSearchParams(window.location.search).get('projet');
   if (projet && subjects[projet]) {
     doc.querySelectorAll('[data-mailto]').forEach(function (a) {
       var key = a.getAttribute('data-subject-key') || 'subject';
-      a.setAttribute('href', a.getAttribute('href').replace(new RegExp('([?&])' + key + '=[^&]*'), '$1' + key + '=' + encodeURIComponent(subjects[projet] + ' · échange confidentiel')));
+      a.setAttribute('href', a.getAttribute('href').replace(new RegExp('([?&])' + key + '=[^&]*'), '$1' + key + '=' + encodeURIComponent(subjects[projet] + L.subjTail)));
     });
   }
   /* ---------- E-mail : choix de la messagerie (ordinateur), mémorisé ---------- */
@@ -421,7 +439,7 @@
     { id: 'outlook', label: 'Outlook (Microsoft 365)', url: function (m) { return 'https://outlook.office.com/mail/deeplink/compose?to=' + m.to + '&subject=' + m.subject + '&body=' + m.body; } },
     { id: 'outlookcom', label: 'Outlook.com / Hotmail', url: function (m) { return 'https://outlook.live.com/mail/0/deeplink/compose?to=' + m.to + '&subject=' + m.subject + '&body=' + m.body; } },
     { id: 'yahoo', label: 'Yahoo Mail', url: function (m) { return 'https://compose.mail.yahoo.com/?to=' + m.to + '&subject=' + m.subject + '&body=' + m.body; } },
-    { id: 'app', label: 'Application e-mail (Mail, Outlook…)', url: null }
+    { id: 'app', label: L.appMail, url: null }
   ];
   function parseMailto(href) {
     var q = href.split('?')[1] || '';
@@ -447,14 +465,14 @@
     pop = doc.createElement('div');
     pop.className = 'mailpop';
     pop.setAttribute('role', 'dialog');
-    pop.setAttribute('aria-label', 'Choisir votre messagerie');
-    var html = '<p class="mailpop__t">Ouvrir le message avec</p><ul class="mailpop__list">';
+    pop.setAttribute('aria-label', L.chooseMail);
+    var html = '<p class="mailpop__t">' + L.openWith + '</p><ul class="mailpop__list">';
     var ordered = MAIL_PROVIDERS.slice().sort(function (a, b) { return (b.id === last) - (a.id === last); });
     ordered.forEach(function (p) {
-      html += '<li><button type="button" data-provider="' + p.id + '">' + p.label + (p.id === last ? '<small>Dernier utilisé</small>' : '') + '</button></li>';
+      html += '<li><button type="button" data-provider="' + p.id + '">' + p.label + (p.id === last ? '<small>' + L.lastUsed + '</small>' : '') + '</button></li>';
     });
-    html += '</ul><button type="button" class="mailpop__copy" data-copy-pop>Copier l’adresse · ' + to + '</button>';
-    html += '<label class="mailpop__remember"><input type="checkbox" checked> Se souvenir de mon choix</label>';
+    html += '</ul><button type="button" class="mailpop__copy" data-copy-pop>' + L.copyAddr + ' · ' + to + '</button>';
+    html += '<label class="mailpop__remember"><input type="checkbox" checked> ' + L.remember + '</label>';
     pop.innerHTML = html;
     doc.body.appendChild(pop);
     var r = link.getBoundingClientRect();
@@ -475,7 +493,7 @@
     });
     pop.querySelector('[data-copy-pop]').addEventListener('click', function (e) {
       var b = e.currentTarget;
-      var done = function () { b.textContent = 'Adresse copiée'; };
+      var done = function () { b.textContent = L.copied; };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(to).then(done, done); else done();
     });
     var first = pop.querySelector('[data-provider]'); if (first) first.focus();
@@ -506,7 +524,7 @@
       var msg = doc.querySelector('[data-copy-msg]');
       function done(ok) {
         if (!msg) return;
-        msg.textContent = ok ? 'Adresse copiée : ' + value : 'Adresse : ' + value;
+        msg.textContent = ok ? L.copied + ' : ' + value : L.addr + ' : ' + value;
         msg.classList.toggle('is-ok', ok);
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -514,6 +532,29 @@
       } else { done(false); }
     });
   });
+
+  /* ---------- Bandeau d'information cookies ---------- */
+  (function () {
+    var KEY = 'tg-cookie-notice';
+    try { if (localStorage.getItem(KEY)) return; } catch (e) { return; }
+    var lang = (doc.documentElement.lang || 'fr').slice(0, 2);
+    var T = {
+      fr: ['Cookies', 'Ce site n’utilise aucun cookie de suivi ni de statistiques. Seules des préférences techniques sont enregistrées sur votre appareil.', 'En savoir plus', 'J’ai compris'],
+      en: ['Cookies', 'This website uses no tracking or analytics cookies. Only technical preferences are stored on your device.', 'Learn more', 'Got it'],
+      de: ['Cookies', 'Diese Website verwendet keine Tracking- oder Statistik-Cookies. Auf Ihrem Gerät werden nur technische Einstellungen gespeichert.', 'Mehr erfahren', 'Verstanden']
+    }[lang] || null;
+    if (!T) return;
+    var box = doc.createElement('div');
+    box.className = 'cookie-notice';
+    box.setAttribute('role', 'region');
+    box.setAttribute('aria-label', T[0]);
+    box.innerHTML = '<strong>' + T[0] + '</strong><p>' + T[1] + '</p><div class="cookie-notice__actions"><button type="button" class="btn btn--sm">' + T[3] + '</button><a href="confidentialite.html#cookies">' + T[2] + '</a></div>';
+    doc.body.appendChild(box);
+    box.querySelector('button').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, '1'); } catch (e) {}
+      box.remove();
+    });
+  })();
 
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');
