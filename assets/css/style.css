@@ -725,3 +725,9 @@ body.menu-open .mobile-menu__list a { transform: none; opacity: 1; }
 .mailcard__note { font-size: 14px; color: var(--muted); }
 .mailcard__note.is-ok { color: var(--accent); font-weight: 600; }
 .hero .btn svg { width: 18px; height: 18px; }
+.mailcard__alt { display: grid; gap: 12px; width: 100%; padding-top: 18px; border-top: 1px solid var(--line); transition: background-color .4s, box-shadow .4s; }
+.mailcard__alt-t { font-size: 14.5px; color: var(--muted); }
+.mailcard__alt-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.mailcard__alt.is-highlight { background: var(--bg); box-shadow: 0 0 0 12px var(--bg), 0 0 0 13px var(--accent); }
+.mailcard__alt.is-highlight .mailcard__alt-t { color: var(--fg); font-weight: 600; }
+.mailcard__note:empty { display: none; }
