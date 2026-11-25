@@ -365,6 +365,32 @@
   if (!qs) render();
   }
 
+  /* ---------- Revue M&A : carrousel ---------- */
+  doc.querySelectorAll('[data-pubs]').forEach(function (vp) {
+    var section = vp.closest('.pubs');
+    var prev = section.querySelector('[data-pubs-prev]');
+    var next = section.querySelector('[data-pubs-next]');
+    function step() {
+      var card = vp.querySelector('.pub');
+      var gap = parseFloat(getComputedStyle(vp.querySelector('.pubs__track')).columnGap) || 0;
+      return card ? card.getBoundingClientRect().width + gap : vp.clientWidth * 0.8;
+    }
+    function update() {
+      var max = vp.scrollWidth - vp.clientWidth - 2;
+      prev.disabled = vp.scrollLeft <= 2;
+      next.disabled = vp.scrollLeft >= max;
+    }
+    prev.addEventListener('click', function () { vp.scrollBy({ left: -step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    next.addEventListener('click', function () { vp.scrollBy({ left: step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    vp.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
+    });
+    vp.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');
   if (y) y.textContent = new Date().getFullYear();

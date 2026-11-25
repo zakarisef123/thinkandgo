@@ -598,3 +598,50 @@ body.menu-open .mobile-menu__list a { transform: none; opacity: 1; }
 /* Pictures fill their frames */
 .tile__img { display: block; }
 .tile__img picture, .quote__img picture { height: 100%; }
+
+/* ==========================================================================
+   Revue M&A : carrousel de publications (accueil)
+   ========================================================================== */
+.pubs { overflow: hidden; }
+.pubs__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: clamp(36px, 5vw, 64px); }
+.pubs__title { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 5.6vw, 76px); line-height: 1; letter-spacing: -.02em; }
+.pubs__nav { display: flex; gap: 8px; }
+.pubs__btn {
+  display: grid; place-items: center; width: 48px; height: 48px;
+  border: 0; background: transparent; color: var(--ink);
+  transition: color .2s, transform .35s var(--ease), opacity .3s;
+}
+.pubs__btn svg { width: 26px; height: 26px; stroke-width: 1.4; }
+.pubs__btn:hover { color: var(--accent); }
+.pubs__btn[data-pubs-prev]:hover { transform: translateX(-3px); }
+.pubs__btn[data-pubs-next]:hover { transform: translateX(3px); }
+.pubs__btn:disabled { opacity: .25; pointer-events: none; }
+.pubs__viewport {
+  --edge: max(var(--gutter), calc((100vw - var(--container)) / 2));
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-padding-inline: var(--edge);
+  scrollbar-width: none;
+}
+.pubs__viewport::-webkit-scrollbar { display: none; }
+.pubs__viewport:focus-visible { outline-offset: -2px; }
+.pubs__track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(470px, 80vw); gap: clamp(24px, 3vw, 40px);
+  padding-inline: var(--edge); width: max-content;
+}
+.pub { scroll-snap-align: start; }
+.pub__link { display: grid; gap: 28px; }
+.pub__img { display: block; aspect-ratio: 1200 / 672; overflow: hidden; border: 1px solid var(--line-strong); background: var(--soft); }
+.pub__img picture, .pub__img img { width: 100%; height: 100%; }
+.pub__img img { object-fit: cover; transition: transform 1.2s var(--ease); }
+.pub__link:hover .pub__img img { transform: scale(1.04); }
+.pub__body { display: grid; gap: 14px; padding-inline: clamp(0px, 2.2vw, 30px); }
+.pub__meta { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.pub__title { font-family: var(--serif); font-size: clamp(26px, 2.4vw, 32px); line-height: 1.22; letter-spacing: -.01em; text-wrap: balance; transition: color .25s; }
+.pub__link:hover .pub__title { color: var(--accent); }
+.pub__excerpt { color: var(--muted); font-size: 16px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.pubs__foot { margin-top: clamp(36px, 5vw, 56px); }
+
+/* Revue page: article image */
+.article__img { display: block; aspect-ratio: 1200 / 672; overflow: hidden; border: 1px solid var(--line-strong); margin-bottom: 12px; }
+.article__img picture, .article__img img { width: 100%; height: 100%; }
+.article__img img { object-fit: cover; }
