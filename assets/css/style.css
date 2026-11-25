@@ -844,3 +844,37 @@ body.menu-open .mobile-menu__list a { transform: none; opacity: 1; }
 .quote blockquote { font-style: normal; font-size: clamp(22px, 2.2vw, 30px); }
 .quote blockquote::before { font-size: 1.6em; }
 .article-card h3, .pub__title { font-size: clamp(22px, 1.9vw, 26px); }
+
+/* ==========================================================================
+   Page confidentialité & bandeau cookies
+   ========================================================================== */
+.legal { padding-top: clamp(40px, 6vw, 72px); }
+.crumbs--dark { color: var(--muted); margin-bottom: 32px; }
+.crumbs--dark [aria-current] { color: var(--fg); }
+.legal__grid { display: grid; gap: 40px; }
+@media (min-width: 1000px) { .legal__grid { grid-template-columns: 260px 1fr; gap: 80px; } .legal__toc { position: sticky; top: calc(var(--header-h) + 32px); align-self: start; } }
+.legal__toc ol { margin-top: 14px; display: grid; gap: 2px; counter-reset: toc; border-top: 1px solid var(--line); }
+.legal__toc li { counter-increment: toc; border-bottom: 1px solid var(--line); }
+.legal__toc a { display: flex; gap: 10px; padding: 10px 0; font-size: 14.5px; color: var(--muted); transition: color .2s; }
+.legal__toc a::before { content: counter(toc) "."; color: var(--accent); font-weight: 600; min-width: 18px; }
+.legal__toc a:hover { color: var(--fg); }
+.legal__body { max-width: 72ch; }
+.legal__body .h2 { margin-bottom: 4px; }
+.legal__date { font-size: 14px; color: var(--muted); }
+.legal__body h3 { scroll-margin-top: calc(var(--header-h) + 16px); }
+.legal__body p:first-child::first-letter { all: unset; }
+.legal__body a { color: var(--accent); border-bottom: 1px solid currentColor; }
+.footer__legal { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+.cookie-notice {
+  position: fixed; z-index: 150; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: min(420px, calc(100vw - 32px));
+  padding: 20px 22px; background: var(--bg); border: 1px solid var(--line-strong); border-top: 2px solid var(--accent);
+  box-shadow: 0 20px 50px -20px rgba(15, 17, 20, .35);
+  display: grid; gap: 14px; font-size: 14px; line-height: 1.55; color: var(--muted);
+  animation: popIn .4s var(--ease) both;
+}
+.cookie-notice strong { color: var(--fg); font-size: 15px; }
+.cookie-notice a { color: var(--fg); border-bottom: 1px solid var(--line-strong); }
+.cookie-notice__actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+@media (max-width: 1079px) { .cookie-notice { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); } }
