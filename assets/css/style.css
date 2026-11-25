@@ -134,7 +134,17 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
   background: var(--bg); border-bottom: 1px solid var(--line);
   transition: transform .45s var(--ease), box-shadow .3s;
 }
-.header.is-scrolled { box-shadow: 0 8px 30px -18px rgba(15, 17, 20, .25); }
+.header { transition: transform .45s var(--ease), box-shadow .3s, background-color .35s, border-color .35s; }
+.header.is-scrolled {
+  background: rgba(255, 255, 255, .72);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border-bottom-color: rgba(15, 17, 20, .08);
+  box-shadow: 0 8px 30px -18px rgba(15, 17, 20, .25);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header.is-scrolled { background: rgba(255, 255, 255, .95); }
+}
 .header.is-hidden { transform: translateY(-100%); }
 .header__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: var(--header-h); }
 .logo { display: inline-flex; color: var(--ink); }
