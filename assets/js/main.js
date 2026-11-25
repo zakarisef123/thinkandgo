@@ -411,9 +411,32 @@
   var projet = new URLSearchParams(window.location.search).get('projet');
   if (projet && subjects[projet]) {
     doc.querySelectorAll('[data-mailto]').forEach(function (a) {
-      a.setAttribute('href', a.getAttribute('href').replace(/subject=[^&]*/, 'subject=' + encodeURIComponent(subjects[projet] + ' · échange confidentiel')));
+      var key = a.getAttribute('data-subject-key') || 'subject';
+      a.setAttribute('href', a.getAttribute('href').replace(new RegExp('([?&])' + key + '=[^&]*'), '$1' + key + '=' + encodeURIComponent(subjects[projet] + ' · échange confidentiel')));
     });
   }
+  // If no mail app opens (the page keeps focus), point the visitor to Gmail / Outlook / copy
+  doc.querySelectorAll('a[href^="mailto:"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var alt = doc.querySelector('[data-mail-alt]');
+      if (!alt) return;
+      var left = false;
+      function onBlur() { left = true; }
+      window.addEventListener('blur', onBlur);
+      doc.addEventListener('visibilitychange', onBlur);
+      setTimeout(function () {
+        window.removeEventListener('blur', onBlur);
+        doc.removeEventListener('visibilitychange', onBlur);
+        if (!left) {
+          alt.classList.add('is-highlight');
+          var t = alt.querySelector('.mailcard__alt-t');
+          if (t) t.textContent = 'Aucune messagerie ne s’est ouverte ? Choisissez la vôtre :';
+          alt.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        }
+      }, 1500);
+    });
+  });
+
   doc.querySelectorAll('[data-copy]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var value = btn.getAttribute('data-copy');
