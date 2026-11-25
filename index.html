@@ -95,14 +95,14 @@
   <main id="main">
 
     <section class="hero hero--video" id="top">
-      <div class="hero__media hero__media--video"><video class="hero__video" autoplay muted loop playsinline preload="auto" poster="assets/video/hero-poster.jpg" aria-hidden="true" data-cities="0:Genève · Suisse|3.6:Paris · France|7.2:Milan · Italie|10.8:Francfort · Allemagne|14.4:Vienne · Autriche|18:New York · États-Unis"><source src="assets/video/hero.webm" type="video/webm"><source src="assets/video/hero.mp4" type="video/mp4"></video><p class="hero__city" aria-hidden="true"><span>Genève · Suisse</span></p><button class="hero__toggle" type="button" aria-label="Mettre la vidéo en pause" aria-pressed="false"><span></span></button></div>
+      <div class="hero__media hero__media--video"><video class="hero__video" autoplay muted loop playsinline preload="auto" poster="assets/video/hero-poster.jpg" aria-hidden="true" ><source src="assets/video/hero.webm" type="video/webm"><source src="assets/video/hero.mp4" type="video/mp4"></video><button class="hero__toggle" type="button" aria-label="Mettre la vidéo en pause" aria-pressed="false"><span></span></button></div>
       <div class="container hero__inner">
         <div class="hero__copy">
           
           <p class="label">Fusions &amp; acquisitions · Suisse &amp; international</p>
           <h1>Acquérir et céder, <em>avec un regard d’entrepreneur.</em></h1>
           <p class="hero__lead">thinkGo accompagne dirigeants, investisseurs et family offices dans l’acquisition, la croissance externe et la cession d’entreprises de <strong>CHF&nbsp;3 à 150&nbsp;millions</strong>, hors marché et en toute confidentialité.</p>
-          <div class="hero__actions"><a class="btn" href="contact.html">Échange confidentiel <svg aria-hidden="true"><use href="#i-arrow"/></svg></a><a class="arrow-link" href="#essentiel">L’essentiel en 30 secondes <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+          
         </div>
       </div>
     </section>
@@ -153,9 +153,12 @@
       </div>
     </section>
 
-    <section class="section pubs" id="revue" aria-labelledby="revue-title">
+    <section class="section section--soft pubs" id="revue" aria-labelledby="revue-title">
       <div class="container pubs__head">
-        <h2 class="pubs__title" id="revue-title">Revue M&amp;A</h2>
+        <div class="pubs__intro">
+          <h2 class="pubs__title" id="revue-title">Revue M&amp;A</h2>
+          <p class="pubs__sub">Le regard de thinkGo sur l’acquisition, la cession et les opérations transfrontalières.</p>
+        </div>
         <div class="pubs__nav">
           <button class="pubs__btn" type="button" data-pubs-prev aria-label="Publications précédentes"><svg aria-hidden="true"><use href="#i-arrow-left"/></svg></button>
           <button class="pubs__btn" type="button" data-pubs-next aria-label="Publications suivantes"><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
@@ -167,7 +170,7 @@
             <a class="pub__link" href="revue.html#hors-marche">
               <span class="pub__img"><picture><source type="image/webp" srcset="assets/img/revue-hors-marche-600.webp 600w, assets/img/revue-hors-marche-1200.webp 1200w" sizes="(min-width: 900px) 470px, 80vw"><img src="assets/img/revue-hors-marche-600.jpg" srcset="assets/img/revue-hors-marche-600.jpg 600w, assets/img/revue-hors-marche-1200.jpg 1200w" sizes="(min-width: 900px) 470px, 80vw" alt="" loading="lazy" width="1200" height="672"></picture></span>
               <span class="pub__body">
-                <span class="pub__meta">Acquisition · Lecture 4 min</span>
+                <span class="pub__meta"><span class="pub__num">N° 01</span><b>Acquisition</b><span>Lecture 4 min</span></span>
                 <span class="pub__title">Acquérir hors marché&nbsp;: pourquoi les meilleures cibles ne sont pas à vendre</span>
                 <span class="pub__excerpt">Les entreprises les plus intéressantes sont rarement en vente. Les identifier et les approcher demande une méthode, de la patience et un vrai respect du dirigeant en face.</span>
               </span>
@@ -177,7 +180,7 @@
             <a class="pub__link" href="revue.html#preparer-cession">
               <span class="pub__img"><picture><source type="image/webp" srcset="assets/img/revue-cession-600.webp 600w, assets/img/revue-cession-1200.webp 1200w" sizes="(min-width: 900px) 470px, 80vw"><img src="assets/img/revue-cession-600.jpg" srcset="assets/img/revue-cession-600.jpg 600w, assets/img/revue-cession-1200.jpg 1200w" sizes="(min-width: 900px) 470px, 80vw" alt="" loading="lazy" width="1200" height="672"></picture></span>
               <span class="pub__body">
-                <span class="pub__meta">Cession · Lecture 4 min</span>
+                <span class="pub__meta"><span class="pub__num">N° 02</span><b>Cession</b><span>Lecture 4 min</span></span>
                 <span class="pub__title">Céder son entreprise&nbsp;: ce qui se prépare avant de parler à un acquéreur</span>
                 <span class="pub__excerpt">Une cession se joue en grande partie avant le premier rendez-vous. Valeur, informations, calendrier&nbsp;: ce que le dirigeant gagne à anticiper.</span>
               </span>
@@ -187,7 +190,7 @@
             <a class="pub__link" href="revue.html#cross-border">
               <span class="pub__img"><picture><source type="image/webp" srcset="assets/img/revue-cross-border-600.webp 600w, assets/img/revue-cross-border-1200.webp 1200w" sizes="(min-width: 900px) 470px, 80vw"><img src="assets/img/revue-cross-border-600.jpg" srcset="assets/img/revue-cross-border-600.jpg 600w, assets/img/revue-cross-border-1200.jpg 1200w" sizes="(min-width: 900px) 470px, 80vw" alt="" loading="lazy" width="1200" height="672"></picture></span>
               <span class="pub__body">
-                <span class="pub__meta">International · Lecture 3 min</span>
+                <span class="pub__meta"><span class="pub__num">N° 03</span><b>International</b><span>Lecture 3 min</span></span>
                 <span class="pub__title">Opérations transfrontalières&nbsp;: la culture compte autant que les chiffres</span>
                 <span class="pub__excerpt">Entre la Suisse, l’Europe et l’Amérique du Nord, une négociation se gagne aussi par la compréhension des codes de chaque côté de la table.</span>
               </span>
@@ -197,7 +200,7 @@
             <a class="pub__link" href="revue.html#valorisation">
               <span class="pub__img"><picture><source type="image/webp" srcset="assets/img/revue-valorisation-600.webp 600w, assets/img/revue-valorisation-1200.webp 1200w" sizes="(min-width: 900px) 470px, 80vw"><img src="assets/img/revue-valorisation-600.jpg" srcset="assets/img/revue-valorisation-600.jpg 600w, assets/img/revue-valorisation-1200.jpg 1200w" sizes="(min-width: 900px) 470px, 80vw" alt="" loading="lazy" width="1200" height="672"></picture></span>
               <span class="pub__body">
-                <span class="pub__meta">Valorisation · Lecture 3 min</span>
+                <span class="pub__meta"><span class="pub__num">N° 04</span><b>Valorisation</b><span>Lecture 3 min</span></span>
                 <span class="pub__title">Valorisation&nbsp;: ce qu’un acquéreur paie vraiment</span>
                 <span class="pub__excerpt">Un multiple ne dit pas tout. La valeur d’une entreprise se joue aussi dans ce qu’elle permet à son acquéreur de faire demain.</span>
               </span>
@@ -207,7 +210,7 @@
             <a class="pub__link" href="revue.html#confidentialite">
               <span class="pub__img"><picture><source type="image/webp" srcset="assets/img/revue-confidentialite-600.webp 600w, assets/img/revue-confidentialite-1200.webp 1200w" sizes="(min-width: 900px) 470px, 80vw"><img src="assets/img/revue-confidentialite-600.jpg" srcset="assets/img/revue-confidentialite-600.jpg 600w, assets/img/revue-confidentialite-1200.jpg 1200w" sizes="(min-width: 900px) 470px, 80vw" alt="" loading="lazy" width="1200" height="672"></picture></span>
               <span class="pub__body">
-                <span class="pub__meta">Méthode · Lecture 3 min</span>
+                <span class="pub__meta"><span class="pub__num">N° 05</span><b>Méthode</b><span>Lecture 3 min</span></span>
                 <span class="pub__title">Confidentialité&nbsp;: protéger une opération du premier échange au closing</span>
                 <span class="pub__excerpt">Une rumeur peut inquiéter des clients, des équipes ou des concurrents. La confidentialité se protège à chaque étape, pas seulement par un contrat.</span>
               </span>
