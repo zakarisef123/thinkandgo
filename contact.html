@@ -52,6 +52,7 @@
 <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
 <symbol id="i-loader" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></symbol>
 <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="1"/><path d="m3 6 9 7 9-7"/></symbol>
   </svg>
   <a class="skip-link" href="#main">Aller au contenu</a>
 
@@ -67,7 +68,7 @@
       <a href="index.html" class="logo" aria-label="thinkGo, retour à l’accueil"><svg aria-hidden="true"><use href="#logo"/></svg></a>
       <nav class="nav" aria-label="Navigation principale"><ul class="nav__list"><li><a class="nav__link" href="acquisition.html">Acquisition</a></li><li><a class="nav__link" href="cession.html">Cession</a></li><li><a class="nav__link" href="revue.html">Revue M&amp;A</a></li><li><a class="nav__link" href="a-propos.html">À propos</a></li></ul></nav>
       <div class="header__actions">
-        <a class="btn btn--sm header__cta" href="#funnel">Nous contacter <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--sm header__cta" href="#ecrire">Nous contacter <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu"><span class="burger__lines"><span></span><span></span></span></button>
       </div>
     </div>
@@ -84,7 +85,7 @@
       <li><a href="contact.html" aria-current="page">Contact <small>06</small></a></li>
     </ul>
     <div class="mobile-menu__foot">
-      <a class="btn btn--block" href="#funnel">Demander un échange confidentiel <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="btn btn--block" href="#ecrire">Demander un échange confidentiel <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
       <a class="btn btn--ghost btn--block" href="tel:+41792000703"><svg aria-hidden="true"><use href="#i-phone"/></svg> +41 79 200 07 03</a>
       <p>Accord de confidentialité dès le premier échange.</p>
     </div>
@@ -99,8 +100,8 @@
           <nav class="crumbs" aria-label="Fil d’Ariane"><a href="index.html">Accueil</a><span aria-hidden="true">/</span><span aria-current="page">Contact</span></nav>
           <p class="label">Premier échange confidentiel</p>
           <h1>Parlons de votre projet, <em>en toute confidentialité.</em></h1>
-          <p class="hero__lead">Un accord de confidentialité dès le premier échange. Choisissez le moyen qui vous convient&nbsp;: le téléphone ou quelques questions en ligne.</p>
-          <div class="hero__actions"><a class="btn btn--light" href="tel:+41792000703"><svg aria-hidden="true"><use href="#i-phone"/></svg> +41 79 200 07 03</a><a class="arrow-link" href="#funnel">Répondre en ligne <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+          <p class="hero__lead">Un accord de confidentialité dès le premier échange. Écrivez directement à Servais Micolot ou appelez-le&nbsp;: vous échangez avec lui, d’entrepreneur à entrepreneur.</p>
+          <div class="hero__actions"><a class="btn" href="mailto:servais.micolot@thinkgo.ch?subject=Premier%20%C3%A9change%20confidentiel&body=Bonjour%20Monsieur%20Micolot%2C%0A%0AJe%20souhaiterais%20%C3%A9changer%20avec%20vous%20au%20sujet%20de%20mon%20projet.%0A%0A" data-mailto><svg aria-hidden="true"><use href="#i-mail"/></svg> Écrire un e-mail</a><a class="arrow-link" href="tel:+41792000703">+41 79 200 07 03 <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
         </div>
       </div>
     </section>
@@ -120,158 +121,20 @@
             <a class="direct__alt" href="https://www.linkedin.com/company/35509996/" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-linkedin"/></svg>Suivre thinkGo sur LinkedIn</a>
           </div>
         </aside>
-        <div class="funnel reveal" data-delay="1" id="funnel">
-          <div class="funnel__progress" aria-hidden="true">
-            <div class="funnel__bar"><span></span></div>
-            <span class="funnel__count">Étape <b data-step-current>1</b> / <b data-step-total>4</b></span>
-          </div>
-
-          <form name="contact" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
-            <input type="hidden" name="form-name" value="contact">
-            <p class="sr-only"><label>Ne pas remplir&nbsp;: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-
-            <!-- Step 1 -->
-            <fieldset class="funnel__step is-active" data-step="1">
-              <legend class="funnel__q">Quel est votre projet&nbsp;?</legend>
-              <p class="funnel__hint">Choisissez l’option qui vous correspond le mieux.</p>
-              <div class="choices">
-                <label class="choice">
-                  <input type="radio" name="projet" value="Acquisition / croissance externe" data-intent-value="acquerir" required>
-                  <span class="choice__box">
-                    <span class="choice__ico"><svg aria-hidden="true"><use href="#i-trend"/></svg></span>
-                    <span class="choice__text"><strong>Acquérir une entreprise</strong><span>Croissance externe, rachat d’un concurrent, d’un fournisseur, d’un savoir-faire</span></span>
-                    <span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
-                  </span>
-                </label>
-                <label class="choice">
-                  <input type="radio" name="projet" value="Cession d’entreprise" data-intent-value="ceder">
-                  <span class="choice__box">
-                    <span class="choice__ico"><svg aria-hidden="true"><use href="#i-handshake"/></svg></span>
-                    <span class="choice__text"><strong>Céder mon entreprise</strong><span>Transmission, vente totale ou partielle</span></span>
-                    <span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
-                  </span>
-                </label>
-                <label class="choice">
-                  <input type="radio" name="projet" value="Autre / réflexion" data-intent-value="autre">
-                  <span class="choice__box">
-                    <span class="choice__ico"><svg aria-hidden="true"><use href="#i-help"/></svg></span>
-                    <span class="choice__text"><strong>Autre / je m’informe</strong><span>Prise de participation, réflexion stratégique, question ouverte</span></span>
-                    <span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
-                  </span>
-                </label>
-              </div>
-            </fieldset>
-
-            <!-- Step 2 -->
-            <fieldset class="funnel__step" data-step="2">
-              <legend class="funnel__q">Vous êtes…</legend>
-              <p class="funnel__hint">Pour vous orienter vers le bon interlocuteur.</p>
-              <div class="choices choices--2">
-                <label class="choice choice--compact">
-                  <input type="radio" name="profil" value="Entrepreneur / dirigeant" required>
-                  <span class="choice__box"><span class="choice__ico"><svg aria-hidden="true"><use href="#i-user"/></svg></span><span class="choice__text"><strong>Entrepreneur ou dirigeant</strong></span><span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span></span>
-                </label>
-                <label class="choice choice--compact">
-                  <input type="radio" name="profil" value="Entreprise / groupe">
-                  <span class="choice__box"><span class="choice__ico"><svg aria-hidden="true"><use href="#i-building"/></svg></span><span class="choice__text"><strong>Entreprise ou groupe</strong></span><span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span></span>
-                </label>
-                <label class="choice choice--compact">
-                  <input type="radio" name="profil" value="Family office / fonds">
-                  <span class="choice__box"><span class="choice__ico"><svg aria-hidden="true"><use href="#i-landmark"/></svg></span><span class="choice__text"><strong>Family office ou fonds</strong></span><span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span></span>
-                </label>
-                <label class="choice choice--compact">
-                  <input type="radio" name="profil" value="Investisseur privé / autre">
-                  <span class="choice__box"><span class="choice__ico"><svg aria-hidden="true"><use href="#i-layers"/></svg></span><span class="choice__text"><strong>Investisseur privé ou autre</strong></span><span class="choice__check"><svg aria-hidden="true"><use href="#i-check"/></svg></span></span>
-                </label>
-              </div>
-            </fieldset>
-
-            <!-- Step 3 -->
-            <fieldset class="funnel__step" data-step="3">
-              <legend class="funnel__q">Parlons du périmètre</legend>
-              <p class="funnel__hint">Une estimation suffit, tout reste confidentiel.</p>
-
-              <div class="subq">
-                <span class="subq__label" id="lbl-taille">Valeur d’entreprise estimée</span>
-                <div class="pills" role="radiogroup" aria-labelledby="lbl-taille">
-                  <label class="pill"><input type="radio" name="taille" value="Moins de CHF 3 M" required><span>&lt; CHF 3 M</span></label>
-                  <label class="pill"><input type="radio" name="taille" value="CHF 3–15 M"><span>CHF 3–15 M</span></label>
-                  <label class="pill"><input type="radio" name="taille" value="CHF 15–50 M"><span>CHF 15–50 M</span></label>
-                  <label class="pill"><input type="radio" name="taille" value="CHF 50–150 M"><span>CHF 50–150 M</span></label>
-                  <label class="pill"><input type="radio" name="taille" value="Plus de CHF 150 M"><span>&gt; CHF 150 M</span></label>
-                  <label class="pill"><input type="radio" name="taille" value="Je ne sais pas encore"><span>Je ne sais pas</span></label>
-                </div>
-              </div>
-
-              <div class="subq">
-                <span class="subq__label" id="lbl-zone">Zone géographique <span style="color:var(--muted);font-weight:500">(plusieurs choix possibles)</span></span>
-                <div class="pills" role="group" aria-labelledby="lbl-zone">
-                  <label class="pill"><input type="checkbox" name="zone" value="Suisse"><span>Suisse</span></label>
-                  <label class="pill"><input type="checkbox" name="zone" value="France / Italie / Allemagne"><span>France · Italie · Allemagne</span></label>
-                  <label class="pill"><input type="checkbox" name="zone" value="USA / Canada"><span>USA · Canada</span></label>
-                  <label class="pill"><input type="checkbox" name="zone" value="Autre"><span>Autre</span></label>
-                </div>
-              </div>
-
-              <div class="subq">
-                <span class="subq__label" id="lbl-horizon">Horizon envisagé</span>
-                <div class="pills" role="radiogroup" aria-labelledby="lbl-horizon">
-                  <label class="pill"><input type="radio" name="horizon" value="Dès que possible" required><span>Dès que possible</span></label>
-                  <label class="pill"><input type="radio" name="horizon" value="6 à 12 mois"><span>6 à 12 mois</span></label>
-                  <label class="pill"><input type="radio" name="horizon" value="Plus de 12 mois"><span>Plus de 12 mois</span></label>
-                  <label class="pill"><input type="radio" name="horizon" value="En réflexion"><span>En réflexion</span></label>
-                </div>
-              </div>
-            </fieldset>
-
-            <!-- Step 4 -->
-            <fieldset class="funnel__step" data-step="4">
-              <legend class="funnel__q">Comment vous joindre&nbsp;?</legend>
-              <p class="funnel__hint">Nous revenons vers vous personnellement, en toute discrétion.</p>
-              <div class="funnel__summary" data-summary></div>
-              <div class="fields">
-                <div class="field">
-                  <label for="f-nom">Nom &amp; prénom</label>
-                  <input id="f-nom" name="nom" type="text" autocomplete="name" required placeholder="Jean Dupont">
-                </div>
-                <div class="field">
-                  <label for="f-societe">Société <span>(facultatif)</span></label>
-                  <input id="f-societe" name="societe" type="text" autocomplete="organization" placeholder="Nom de votre société">
-                </div>
-                <div class="field">
-                  <label for="f-email">E-mail professionnel</label>
-                  <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="vous@entreprise.ch">
-                </div>
-                <div class="field">
-                  <label for="f-tel">Téléphone <span>(facultatif)</span></label>
-                  <input id="f-tel" name="telephone" type="tel" autocomplete="tel" placeholder="+41 …">
-                </div>
-                <div class="field field--full">
-                  <label for="f-message">Quelques mots sur votre projet <span>(facultatif)</span></label>
-                  <textarea id="f-message" name="message" placeholder="Secteur, contexte, ce que vous recherchez…"></textarea>
-                </div>
-              </div>
-              <label class="consent">
-                <input type="checkbox" name="consentement" value="oui" required>
-                <span>J’accepte que thinkGo utilise ces informations pour me recontacter au sujet de mon projet. Elles restent strictement confidentielles.</span>
-              </label>
-            </fieldset>
-
-            <p class="funnel__error" role="alert" aria-live="assertive"></p>
-
-            <div class="funnel__nav">
-              <button type="button" class="funnel__back" data-prev hidden><svg aria-hidden="true"><use href="#i-arrow-left"/></svg> Retour</button>
-              <button type="button" class="btn btn--accent" data-next>Continuer <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-              <button type="submit" class="btn btn--accent" data-submit hidden>Envoyer ma demande <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <div class="mailcard reveal" data-delay="1" id="ecrire">
+          <a class="mailcard__icon" href="mailto:servais.micolot@thinkgo.ch?subject=Premier%20%C3%A9change%20confidentiel&body=Bonjour%20Monsieur%20Micolot%2C%0A%0AJe%20souhaiterais%20%C3%A9changer%20avec%20vous%20au%20sujet%20de%20mon%20projet.%0A%0A" data-mailto aria-label="Écrire un e-mail à Servais Micolot">
+            <svg aria-hidden="true"><use href="#i-mail"/></svg>
+          </a>
+          <div class="mailcard__body">
+            <p class="label">Écrire à Servais Micolot</p>
+            <h2 class="h2">Un clic, <em>et votre messagerie s’ouvre.</em></h2>
+            <p class="lead">Son adresse est déjà renseignée. Quelques lignes sur votre projet suffisent&nbsp;: secteur, taille, calendrier. Tout reste strictement confidentiel.</p>
+            <a class="mailcard__addr" href="mailto:servais.micolot@thinkgo.ch?subject=Premier%20%C3%A9change%20confidentiel&body=Bonjour%20Monsieur%20Micolot%2C%0A%0AJe%20souhaiterais%20%C3%A9changer%20avec%20vous%20au%20sujet%20de%20mon%20projet.%0A%0A" data-mailto>servais.micolot@thinkgo.ch</a>
+            <div class="mailcard__actions">
+              <a class="btn" href="mailto:servais.micolot@thinkgo.ch?subject=Premier%20%C3%A9change%20confidentiel&body=Bonjour%20Monsieur%20Micolot%2C%0A%0AJe%20souhaiterais%20%C3%A9changer%20avec%20vous%20au%20sujet%20de%20mon%20projet.%0A%0A" data-mailto>Écrire un e-mail <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <button class="btn btn--ghost" type="button" data-copy="servais.micolot@thinkgo.ch">Copier l’adresse</button>
             </div>
-            <p class="funnel__nda"><svg aria-hidden="true"><use href="#i-lock"/></svg> Vos informations sont traitées de manière strictement confidentielle.</p>
-          </form>
-
-          <div class="funnel__done" role="status" aria-live="polite">
-            <span class="funnel__done-ico"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
-            <h3 class="h3">Merci, votre demande a bien été reçue.</h3>
-            <p>Nous revenons vers vous très prochainement pour convenir d’un premier échange confidentiel. Pour toute urgence, appelez-nous directement au <a href="tel:+41792000703" style="color:var(--ink);font-weight:600">+41 79 200 07 03</a>.</p>
-            <a class="arrow-link" href="index.html">Retour à l’accueil <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <p class="mailcard__note" data-copy-msg aria-live="polite">Votre messagerie ne s’ouvre pas&nbsp;? Copiez l’adresse et écrivez-nous depuis votre boîte habituelle.</p>
           </div>
         </div>
       </div>
@@ -283,7 +146,7 @@
           <p class="label">Questions fréquentes</p>
           <h2 class="h2">Avant de <em>nous parler</em></h2>
           <p class="lead">Les réponses aux questions que se posent la plupart des dirigeants avant un premier échange.</p>
-          <a class="btn btn--ink" href="#funnel">Répondre en ligne <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--ink" href="#ecrire">Nous écrire <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
         <div class="faq reveal" data-delay="1">
           <details><summary>Comment se déroule le premier échange&nbsp;? <span class="faq__icon" aria-hidden="true"></span></summary><div class="faq__answer"><p>Il s’agit d’un échange confidentiel pour comprendre votre projet, vos objectifs et votre calendrier, et voir ensemble si nous sommes le bon partenaire pour vous accompagner.</p></div></details>
@@ -307,7 +170,7 @@
         </div>
         <div><h4>Expertises</h4><ul><li><a href="acquisition.html">Acquisition d’entreprise</a></li><li><a href="acquisition.html#methode">Croissance externe</a></li><li><a href="cession.html">Cession d’entreprise</a></li></ul></div>
         <div><h4>thinkGo</h4><ul><li><a href="a-propos.html">À propos</a></li><li><a href="revue.html">Revue M&amp;A</a></li><li><a href="contact.html#faq">Questions fréquentes</a></li></ul></div>
-        <div><h4>Contact</h4><ul><li><a href="tel:+41792000703">+41 79 200 07 03</a></li><li><a href="#funnel">Échange confidentiel</a></li><li><a href="https://www.linkedin.com/company/35509996/" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
+        <div><h4>Contact</h4><ul><li><a href="tel:+41792000703">+41 79 200 07 03</a></li><li><a href="mailto:servais.micolot@thinkgo.ch?subject=Premier%20%C3%A9change%20confidentiel&body=Bonjour%20Monsieur%20Micolot%2C%0A%0AJe%20souhaiterais%20%C3%A9changer%20avec%20vous%20au%20sujet%20de%20mon%20projet.%0A%0A">servais.micolot@thinkgo.ch</a></li><li><a href="https://www.linkedin.com/company/35509996/" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
       </div>
       <div class="footer__bottom"><span>© <span data-year>2026</span> thinkGo. Tous droits réservés.</span><span>Conseil M&amp;A · Acquisition · Cession · Croissance externe</span></div>
     </div>
@@ -315,7 +178,7 @@
 
   <div class="sticky-cta" id="sticky-cta">
     <a class="sticky-cta__call" href="tel:+41792000703" aria-label="Appeler thinkGo"><svg aria-hidden="true"><use href="#i-phone"/></svg></a>
-    <a class="btn" href="#funnel">Échange confidentiel <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <a class="btn" href="#ecrire">Échange confidentiel <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
   </div>
 
   <script src="assets/js/main.js" defer></script>

@@ -8,9 +8,9 @@ acquisition.html      acquisition & croissance externe
 cession.html          cession d’entreprise
 revue.html            Revue M&A (analyses et points de vue)
 a-propos.html         à propos, différence, périmètre
-contact.html          échange confidentiel (formulaire en 4 étapes)
+contact.html          échange confidentiel (e-mail direct à Servais Micolot)
 assets/css/style.css  style « Institution » : serif, angles droits, filets fins
-assets/js/main.js     navigation, animations, ligne du temps, formulaire
+assets/js/main.js     navigation, animations, ligne du temps, carrousel, e-mail
 assets/img/           logo, favicon, photos (webp + jpg, 960/1920 px)
 ```
 
@@ -19,10 +19,10 @@ assets/img/           logo, favicon, photos (webp + jpg, 960/1920 px)
 Les articles sont dans `revue.html`, chacun dans une balise `<article id="...">`.
 Pour en ajouter un, copiez un bloc `<article>` existant et ajoutez sa carte sur la page d’accueil (section `#revue`).
 
-## Formulaire de contact
+## Contact
 
-Le formulaire est prêt pour **Netlify Forms** (`data-netlify="true"`) : une fois le site déployé sur Netlify, les demandes arrivent dans l’onglet *Forms* du tableau de bord.
-Sur un autre hébergement, remplacez l’attribut `action="/"` du formulaire par l’URL d’un service de formulaires (Formspree, Basin…) : le JavaScript envoie les données à cette adresse.
+Pas de formulaire : la page Contact propose un bouton e-mail qui ouvre la messagerie du visiteur avec l’adresse servais.micolot@thinkgo.ch déjà renseignée.
+L’objet du message s’adapte au projet quand le visiteur arrive depuis la page Acquisition ou Cession (`contact.html?projet=acquerir|ceder`).
 
 ## Aperçu local
 

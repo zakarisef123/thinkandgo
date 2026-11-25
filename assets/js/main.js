@@ -406,6 +406,29 @@
     if (reduceMotion) { heroVideo.removeAttribute('autoplay'); setPaused(true); }
   }
 
+  /* ---------- Contact : e-mail pré-rempli selon le projet, copie de l'adresse ---------- */
+  var subjects = { acquerir: 'Projet d’acquisition', ceder: 'Projet de cession' };
+  var projet = new URLSearchParams(window.location.search).get('projet');
+  if (projet && subjects[projet]) {
+    doc.querySelectorAll('[data-mailto]').forEach(function (a) {
+      a.setAttribute('href', a.getAttribute('href').replace(/subject=[^&]*/, 'subject=' + encodeURIComponent(subjects[projet] + ' · échange confidentiel')));
+    });
+  }
+  doc.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var value = btn.getAttribute('data-copy');
+      var msg = doc.querySelector('[data-copy-msg]');
+      function done(ok) {
+        if (!msg) return;
+        msg.textContent = ok ? 'Adresse copiée : ' + value : 'Adresse : ' + value;
+        msg.classList.toggle('is-ok', ok);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(function () { done(true); }, function () { done(false); });
+      } else { done(false); }
+    });
+  });
+
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');
   if (y) y.textContent = new Date().getFullYear();
