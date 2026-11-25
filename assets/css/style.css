@@ -670,3 +670,36 @@ body.menu-open .mobile-menu__list a { transform: none; opacity: 1; }
 .hero__toggle:hover { background: rgba(15,17,20,.5); border-color: var(--white); }
 .hero__toggle span { width: 10px; height: 12px; border-left: 3px solid var(--white); border-right: 3px solid var(--white); }
 .hero__toggle[aria-pressed="true"] span { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent var(--white); }
+
+/* ==========================================================================
+   Signature thinkGo
+   ========================================================================== */
+/* 1. Motif « jumelles » : deux cercles orange devant les étiquettes de section */
+.label { display: inline-flex; align-items: center; gap: 12px; }
+.label::before {
+  content: ""; flex: none; width: 22px; height: 10px;
+  background:
+    radial-gradient(circle at 5px 5px, transparent 3.1px, currentColor 3.4px 4.6px, transparent 4.9px),
+    radial-gradient(circle at 17px 5px, transparent 3.1px, currentColor 3.4px 4.6px, transparent 4.9px);
+}
+.hero .label::before { color: var(--accent-light); }
+.verbs::before, .crumbs::before { content: none; }
+
+/* 2. Trait orange vertical qui guide la lecture des titres de section */
+.sec-head > div:first-child { position: relative; padding-left: 26px; }
+.sec-head > div:first-child::before {
+  content: ""; position: absolute; left: 0; top: 2px; bottom: 6px; width: 2px;
+  background: var(--accent); transform-origin: top; transform: scaleY(1);
+}
+.js .sec-head.reveal > div:first-child::before { transform: scaleY(0); transition: transform 1.1s var(--ease) .25s; }
+.js .sec-head.reveal.is-visible > div:first-child::before { transform: scaleY(1); }
+.statement > .label { align-self: start; }
+
+/* 4. Revue M&A : fond sable, numéro d'édition, sous-titre */
+.pubs__intro { display: grid; gap: 16px; }
+.pubs__sub { color: var(--muted); max-width: 52ch; }
+.pubs .pub__img { border-color: rgba(15, 17, 20, .2); background: var(--stone); }
+.pub__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; color: var(--muted); }
+.pub__meta b { color: var(--accent); font-weight: 600; }
+.pub__num { font-family: var(--serif); font-size: 15px; font-style: italic; letter-spacing: 0; text-transform: none; color: var(--fg); padding-right: 14px; border-right: 1px solid var(--line-strong); }
+@media (prefers-reduced-motion: reduce) { .js .sec-head.reveal > div:first-child::before { transform: scaleY(1); } }
