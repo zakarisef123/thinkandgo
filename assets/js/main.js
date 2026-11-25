@@ -365,6 +365,62 @@
   if (!qs) render();
   }
 
+  /* ---------- Revue M&A : carrousel ---------- */
+  doc.querySelectorAll('[data-pubs]').forEach(function (vp) {
+    var section = vp.closest('.pubs');
+    var prev = section.querySelector('[data-pubs-prev]');
+    var next = section.querySelector('[data-pubs-next]');
+    function step() {
+      var card = vp.querySelector('.pub');
+      var gap = parseFloat(getComputedStyle(vp.querySelector('.pubs__track')).columnGap) || 0;
+      return card ? card.getBoundingClientRect().width + gap : vp.clientWidth * 0.8;
+    }
+    function update() {
+      var max = vp.scrollWidth - vp.clientWidth - 2;
+      prev.disabled = vp.scrollLeft <= 2;
+      next.disabled = vp.scrollLeft >= max;
+    }
+    prev.addEventListener('click', function () { vp.scrollBy({ left: -step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    next.addEventListener('click', function () { vp.scrollBy({ left: step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    vp.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
+    });
+    vp.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+
+  /* ---------- Hero vidéo : nom de la ville, pause, mouvement réduit ---------- */
+  var heroVideo = doc.querySelector('.hero__video');
+  if (heroVideo) {
+    var cityBox = doc.querySelector('.hero__city');
+    var cityText = cityBox && cityBox.querySelector('span');
+    var cities = heroVideo.getAttribute('data-cities').split('|').map(function (c) {
+      var i = c.indexOf(':'); return { t: parseFloat(c.slice(0, i)), name: c.slice(i + 1) };
+    });
+    var currentCity = cities[0].name;
+    heroVideo.addEventListener('timeupdate', function () {
+      var name = cities[0].name;
+      cities.forEach(function (c) { if (heroVideo.currentTime >= c.t + 0.4) name = c.name; });
+      if (name !== currentCity && cityText) {
+        currentCity = name;
+        cityBox.classList.add('is-changing');
+        setTimeout(function () { cityText.textContent = name; cityBox.classList.remove('is-changing'); }, 300);
+      }
+    });
+    var toggle = doc.querySelector('.hero__toggle');
+    function setPaused(paused) {
+      if (paused) heroVideo.pause(); else { var pr = heroVideo.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', String(paused));
+        toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
+      }
+    }
+    if (toggle) toggle.addEventListener('click', function () { setPaused(!heroVideo.paused); });
+    if (reduceMotion) { heroVideo.removeAttribute('autoplay'); setPaused(true); }
+  }
+
   /* ---------- Year ---------- */
   var y = doc.querySelector('[data-year]');
   if (y) y.textContent = new Date().getFullYear();
